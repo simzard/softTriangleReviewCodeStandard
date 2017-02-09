@@ -30,26 +30,31 @@ public class TriangleTest {
      * @param a length of first side of the triangle
      * @param b length of second side of the triangle
      * @param c length of third side of the triangle
+     * @return a string stating the result
      */
     public static String getTriangleType(double a, double b, double c) {
-        /*
+        
         // check if valid input lengths are provided
         if (a <= 0 || b <= 0 || c <= 0) {
             return "not a triangle - lengths must be positive";
         }
-        */
-
+        
         // check that it is actually a triangle by using the triangle inequality
         // it states that the sum of 2 chosen sides must be larger than the third
         // test for each pair
         if (!(a + b > c && a + c > b && b + c > a)) {
             return "not a triangle - the sum of two sides should always be larger than the third.";
         }
-
+        
+        // at this point we are sure that it is a valid triangle
+        
+        // if all the sides are equal it must be an equilateral
         if (a == b && b == c) {
             return "equilateral";
         }
 
+        // if two sides are equal and it is not an equilateral,
+        // it must be an isosceles
         if (a == b || b == c || a == c) {
             return "isosceles";
         } else {
@@ -60,19 +65,21 @@ public class TriangleTest {
 
     /**
      *  Wrap around method to prevent faulty input
+     * @param side The side to query for
+     * @return the length of the side
      */
-    public static double getRobustInput(String number) {
+    public static double getRobustInput(String side) {
         Scanner scanner = new Scanner(System.in);
         double input = 0;
         while (input < 1) {
             try {
-                System.out.print(number + ": ");
+                System.out.print(side + ": ");
                 input = scanner.nextDouble();
             } catch (InputMismatchException e) {
                 System.out.println("Not valid side - please try again...");
-                // skip the input
+                // skip the input - this is important because
+                // the scanner would otherwise be stuck in an infinite loop
                 scanner.next();
-                continue;
             }
         }
         return input;
